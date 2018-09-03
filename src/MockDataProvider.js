@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-import * as LoadState from './LoadState'
+import * as StateChanges from './StateChanges'
+import * as Statuses from './Statuses'
 
 export default class MockDataProvider extends React.Component {
   static propTypes = {
@@ -17,209 +18,123 @@ export default class MockDataProvider extends React.Component {
         name: 'Ross Lynch',
         email: 'ross@example.com'
       },
-
-      currentWorkspace: {
-        spaceId: 'workspace1',
-        displayName: 'Lightning strike',
+      transfer: {
+        transferList: {},
+        requiredTransferWorkspaces: [],
+        deleteWorkspaces: [],
+        status: { name: Statuses.STATUS.READY, error: null },
+      },
+      feedback: {
+        feedbackList: [
+          {
+            stack: 'dont_understand',
+            title: 'I do not understand how to use this.',
+            canComment: false,
+          },
+          {
+            stack: 'dont_need',
+            title: 'I do not need this.',
+            canComment: false,
+          },
+          {
+            stack: 'prefer_other_apps',
+            title: 'I prefer other apps.',
+            canComment: false,
+          },
+          {
+            stack: 'lack_features',
+            title: 'I cannot find the features that I want.',
+            canComment: false,
+          },
+          {
+            stack: 'bugs',
+            title: 'I found this had too many bugs.',
+            canComment: false,
+          },
+          {
+            stack: 'expensive',
+            title: 'I found this was too expensive.',
+            canComment: false,
+          },
+          {
+            stack: 'slow',
+            title: 'I found this was too slow.',
+            canComment: false,
+          },
+          {
+            stack: 'others',
+            title: 'Other reason(s)...',
+            placeHolder: 'Please specify',
+            canComment: true,
+          }
+        ],
+        feedbackComment: '',
+        showCommentForm: true,
+      },
+      confirmation: {
+        isCheckedReadConsequences: false,
+        email: '',
+        status: { name: Statuses.STATUS.READY, error: null },
       },
 
-      loading: true,
+      onChangeFeedbackItemComment: (stack, value) => {
+        this.setState(StateChanges.ON_CHANGE_FEEDBACK_ITEM_COMMENT(stack, value))
+      },
 
-      requiredTransferWorkspaces: [],
+      onChangeFeedbackComment: (value) => {
+        this.setState(StateChanges.ON_CHANGE_FEEDBACK_COMMENT(value))
+      },
 
-      deleteWorkspaces: [],
+      onToggleFeedbackCheckbox: (stack) => {
+        this.setState(StateChanges.ON_TOGGLE_FEEDBACK_CHECKBOX(stack))
+      },
 
-      transferableMembers: [],
+      onAssignToUser: (workspace, user) => {
+        this.setState(StateChanges.ON_ASSIGN_TO_USER(workspace, user))
+      },
+
+      onClickReadConsequnces: (value) => {
+        this.setState(StateChanges.ON_CLICK_READ_CONSEQUENCES(value))
+      },
+
+      onTypeEmail: (email) => {
+        this.setState(StateChanges.ON_TYPE_EMAIL(email))
+      },
 
       fetchRelatedWorkspaces: () => {
-        // Resemble fetching requiredTransferWorkspaces, deleteWorkspaces, and transferableMembers from the server
-        /*
-        window.fetch('/api/fetch-related-workspaces', {
-          method: 'POST',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ userId: this.state.user._id }),
-        }).then((data) => {
-          this.setState({
-            loading: false,
-            requiredTransferWorkspaces: data.requiredTransferWorkspaces,
-            deleteWorkspaces: data.deleteWorkspaces,
-            terminateAccountStatus: LoadState.handleLoaded(this.state.terminateAccountStatus)
-          })
-        }).catch(() => {
-          this.setState({
-            terminateAccountStatus: LoadState.handleLoadFailedWithError('Error deleting account')(this.state.terminateAccountStatus)
-          })
-        })
-        */
-
-        // Simulate fetching requiredTransferWorkspaces, deleteWorkspaces, and transferableMembers from the server
-        setTimeout(() => {
-          this.setState({
-            loading: false,
-            requiredTransferWorkspaces: [
-              {
-                spaceId: 'workspace1',
-                displayName: 'Lightning strike',
-                transferableMembers: [
-                  {
-                    _id: 'user2',
-                    name: 'Ryan Lynch'
-                  },
-                  {
-                    _id: 'user3',
-                    name: 'Riker Lynch'
-                  },
-                  {
-                    _id: 'user4',
-                    name: 'Rydel Lynch'
-                  }
-                ]
-              },
-              {
-                spaceId: 'workspace2',
-                displayName: 'Time machine',
-                transferableMembers: [
-                  {
-                    _id: 'user5',
-                    name: 'Edward Bayer',
-                    workspaceId: 'workspace3'
-                  },
-                  {
-                    _id: 'user6',
-                    name: 'Eli Brook',
-                    workspaceId: 'workspace3'
-                  }
-                ]
-              }
-            ],
-            deleteWorkspaces: [
-              {
-                spaceId: 'workspace3',
-                displayName: 'Moon landing'
-              }
-            ]
-          })
-        }, 1500)
-      },
-
-      transferOwnershipStatus: {
-        workspaceId: null,
-        toUserId: null,
-        ...LoadState.pending,
-      },
-
-      transferOwnership: (user, workspace) => {
-        this.setState({
-          transferOwnershipStatus: {
-            workspaceId: workspace._id,
-            toUserId: this.state.user._id,
-            ...LoadState.loading
-          }
-        }, () => {
-          // Resemble sending transferOwnershipStatus to the server
-          /*
-          window.fetch('/api/check-transfer-ownership', {
-            method: 'POST',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              workspaceId: workspace._id,
-              fromUserId: this.state.user._id,
-              toUserId: user._id
-            }),
-          }).then(() => {
-            this.setState({
-              transferOwnershipStatus: {
-                workspaceId: workspace._id,
-                toUserId: user._id,
-                ...LoadState.completed
-              }
-            })
-          }).catch(() => {
-            this.setState({
-              transferOwnershipStatus: {
-                workspaceId: workspace._id,
-                toUserId: user._id,
-                ...LoadState.error
-              }
-            })
-          })
-          */
-
-          // Simulate sending transferOwnershipStatus to the server
-          // Note that there is 30% chance of getting error from the server
+        this.setState(StateChanges.FETCHING_RELATED_WORKSPACES, () => {
+          // Simulate fetching requiredTransferWorkspaces, deleteWorkspaces, and transferableMembers from the server
           setTimeout(() => {
-            this.setState({
-              transferOwnershipStatus: {
-                workspaceId: workspace._id,
-                fromUserId: this.state.user._id,
-                toUserId: user._id,
-                ...(Math.random() < 0.3 ? LoadState.error : LoadState.completed)
-              }
-            })
-          }, 1000)
+            if (Math.random() < 0.7) {
+              this.setState(StateChanges.SUCCESS_FETCHING_RELATED_WORKSPACES)
+            } else {
+              this.setState(StateChanges.FAIL_FETCHING_RELATED_WORKSPACES('Error fetching related workspaces'))
+            }
+
+          }, 1500)
         })
       },
 
       terminateAccount: (payload) => {
-        // Resemble sending payload to the server
-        /*
-        window.fetch('/api/terminate-account', {
-          method: 'POST',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(payload),
-        }).then(() => {
-          this.setState({
-            terminateAccountStatus: LoadState.handleLoaded(this.state.terminateAccountStatus)
-          })
-        }).catch(() => {
-          this.setState({
-            terminateAccountStatus: LoadState.handleLoadFailedWithError('Error deleting account')(this.state.terminateAccountStatus)
-          })
-        })
-        */
-
         // Simulate sending payload to the server
         // Note that there is 30% chance of getting error from the server
-        this.setState({
-          terminateAccountStatus: LoadState.handleLoadRequested(this.state.terminateAccountStatus)
-        }, () => {
+        this.setState(StateChanges.REQUESTING_TERMINATING_ACCOUNT,
+          () => {
           setTimeout(() => {
-            if (Math.random() < 0.3) {
-              this.setState({
-                terminateAccountStatus: LoadState.handleLoaded(this.state.terminateAccountStatus)
-              })
+            if (Math.random() < 0.7) {
+              this.setState(StateChanges.SUCCESS_TERMINATING_ACCOUNT)
             } else {
-              this.setState({
-                terminateAccountStatus: LoadState.handleLoadFailedWithError('Error deleting account')(this.state.terminateAccountStatus)
-              })
+              this.state.terminateAccountError('Error deleting account')
             }
-          }, 5000)
+          }, 3000)
         })
       },
 
-      terminateAccountError: (error) => {
-        this.setState({
-          terminateAccountStatus: LoadState.handleLoadFailedWithError(error)(this.state.terminateAccountStatus)
-        })
+      terminateAccountError: (errorMsg) => {
+        this.setState(StateChanges.ERROR_TERMINATING_ACCOUNT(errorMsg))
       },
 
-      terminateAccountStatus: {},
-      resetTerminateAccountStatus: () => {
-        this.setState({
-          terminateAccountStatus: LoadState.pending
-        })
-      },
-
-      rediectToHomepage: () => {
+      redirectToHomepage: () => {
         window.location = 'http://www.example.com/'
       },
     }

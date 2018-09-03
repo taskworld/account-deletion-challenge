@@ -2,26 +2,22 @@ import _ from 'lodash'
 import PropTypes from 'prop-types'
 import React from 'react'
 
-import * as LoadState from './LoadState'
-
 export default class AssignOwnership extends React.Component {
   static propTypes = {
-    user: PropTypes.object,
     workspace: PropTypes.object,
-    transferData: PropTypes.array,
+    transferList: PropTypes.array,
     onAssignToUser: PropTypes.func,
   }
 
-  getAddedMember() {
+  defaultSelectedUser = () => {
     const { workspace, transferData } = this.props
     return _.chain(transferData)
-      .reject(LoadState.isError || LoadState.isLoading)
-      .find((assign) => assign.workspaceId === workspace.spaceId)
+      .find(t => t.workspaceId === workspace.spaceId)
       .get('toUser._id', '')
       .value()
   }
 
-  onAssignToUser = (e) => {
+  onChangeUser = (e) => {
     const user = this.props.workspace.transferableMembers.find(user => user._id === e.target.value)
     this.props.onAssignToUser(this.props.workspace, user)
   }
@@ -30,8 +26,8 @@ export default class AssignOwnership extends React.Component {
     return (
       <div style={{ textDecoration: 'underline', cursor: 'pointer' }}>
         <select
-          value={this.getAddedMember()}
-          onChange={this.onAssignToUser}
+          value={this.defaultSelectedUser()}
+          onChange={this.onChangeUser}
           style={{ minWidth: '3rem' }}
         >
           <option value='' disabled></option>
