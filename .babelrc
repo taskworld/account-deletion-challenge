@@ -3,6 +3,20 @@
     "react-app"
   ],
   "plugins": [
-    "transform-class-properties"
+    [
+      "transform-runtime",
+      {
+        "polyfill": false,
+        "regenerator": true
+      }
+    ],
+    "transform-object-rest-spread",
+    "transform-class-properties",
+    [
+      "transform-react-jsx",
+      {
+        "pragma": "React.createElement"
+      }
+    ]
   ]
 }
