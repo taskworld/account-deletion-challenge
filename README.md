@@ -20,7 +20,7 @@ You can go back and forth through the steps anytime, but the whole process is co
 
 ### Instructions
 
-- You are instructed to improve the code mainly in JavaScript files inside `client/src` directory. There are many bugs hidden in this app, try to fix as many bugs as you can find. Also, try to refactor the code so that it becomes easier to maintain. We expect you to show us your best work.
+- You are instructed to improve the code mainly in JavaScript files inside `client/src` directory. There are many bugs hidden in this app, try to fix as many bugs as you can find. Also, try to refactor the code so that it becomes easier to maintain. We expect you to show your best work with highest attention to detail.
 - You may amend, move, or delete some of the existing functionality even it breaks the specifications as long as you see fit.
 - You may add new functionality in addition to the specifications as you see fit.
 - You may rename the files and React components as you see fit.
@@ -34,7 +34,7 @@ You can go back and forth through the steps anytime, but the whole process is co
 
 You will be judged by the following criteria.
 - Functionality is correct with respect to the specifications, while breaking changes are acceptable only if rational.
-- Bugs are fixed based on the specifications.
+- As many bugs are fixed as possible. It should be hard for us to find a remaining bug.
 - Identifiers are named meaningfully and consistently.
 - High coupling code blocks are adjacent to each other.
 - Possible errors are handled and exposed to users beautifully. Note: Any API call may result in an error due to invalid input, network disconnection, or server error. Due to network conditions, sometimes an API call may take longer time than usual.
