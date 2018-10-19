@@ -2,7 +2,7 @@
 
 This repository demonstrates bad code that was previously used in Taskworld. The ultimate goal of this web is allowing users to delete their account, but before doing so, they must transfer their ownership to another user and do our exit survey. To confirm the account deletion, users need to type their emails, and tick the acknowledgment check-box. After deleting accounts, users will be redirected to `www.example.com`.
 
-You can bring up the web by going to `client` directory, running `npm install` and `npm run serve` respectively, then open http://localhost:1234/ in your browser.
+You can bring up the web by going to `client` directory, running `npm install` and `npm run serve` respectively, then open http://localhost:1234/ in your browser. You may also [view this project on CodeSandbox.io](https://codesandbox.io/s/github/taskworld/account-deletion-challenge/tree/master/client).
 
 ### Specifications
 
