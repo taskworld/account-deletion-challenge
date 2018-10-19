@@ -1,6 +1,6 @@
 ### Preface
 
-This repository demonstrates bad code that was previously used in Taskworld. The ultimate goal of this web is allowing users to delete their account, but before doing so, we force users to transfer their ownership to another user and do our exit survey. To confirm the account deletion, users need to type their emails, and tick the acknowledgment check-box. After deleting accounts, users will be redirected to `www.example.com`.
+This repository demonstrates bad code that was previously used in Taskworld. The ultimate goal of this web is allowing users to delete their account, but before doing so, they must transfer their ownership to another user and do our exit survey. To confirm the account deletion, users need to type their emails, and tick the acknowledgment check-box. After deleting accounts, users will be redirected to `www.example.com`.
 
 You can bring up the web by going to `client` directory, running `npm install` and `npm run serve` respectively, then open http://localhost:1234/ in your browser.
 
@@ -20,7 +20,7 @@ You can go back and forth through the steps anytime, but the whole process is co
 
 ### Instructions
 
-- You are instructed to refactor mainly JavaScript files inside `client/src` directory.
+- You are instructed to improve the code mainly in JavaScript files inside `client/src` directory. There are many bugs hidden in this app, try to fix as many bugs as you can find. Also, try to refactor the code so that it becomes easier to maintain.
 - You may amend, move, or delete some of the existing functionality even it breaks the specifications as long as you see fit.
 - You may add new functionality in addition to the specifications as you see fit.
 - You may rename the files and React components as you see fit.
@@ -35,12 +35,11 @@ You can go back and forth through the steps anytime, but the whole process is co
 You will be judged by the following criteria.
 - Functionality is correct with respect to the specifications, while breaking changes are acceptable only if rational.
 - Bugs are fixed based on the specifications.
-- Functional programming paradigm is preferable.
-- Functions do only one thing.
-- Identifiers are named meaningfully.
+- Identifiers are named meaningfully and consistently.
 - High coupling code blocks are adjacent to each other.
-- Possible errors are handled and exposed to users beautifully.
+- Possible errors are handled and exposed to users beautifully. Note: Any API call may result in an error due to invalid input, network disconnection, or server error. Due to network conditions, sometimes an API call may take longer time than usual.
 - Good choice of data structure is used.
 - Consistent indentation and formatting are followed.
 - Indirection is minimized as much as possible, while still maintaining flexibility.
 - Git commit messages clearly state the reason of the change.
+- Over-engineering and under-engineering are avoided.
