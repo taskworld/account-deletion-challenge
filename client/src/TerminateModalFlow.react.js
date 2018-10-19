@@ -94,20 +94,11 @@ export default class TerminateModalFlow extends React.Component {
     return collection
   }
 
-  getCustomSurveyData = () => {
-    const customSurveyData = {
-      user: this.props.user,
-      workspace: this.props.currentWorkspace,
-    }
-    return customSurveyData
-  }
-
   submitSurvey = () => {
     const feedbackRefs = this.getRefsValues(this.refs, 'feedbackForm')
     const surveyPayload = {
       feedbackRefs,
       comment: '',
-      data: this.getCustomSurveyData()
     }
     submitToSurveyMonkeyDeleteAccount(surveyPayload)
   }

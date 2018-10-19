@@ -5,6 +5,7 @@
 		"**/.hg": true,
 		"**/CVS": true,
 		"**/.DS_Store": true,
-		"out": true
+		"client/.cache": true,
+		"client/out": true
 	}
 }
