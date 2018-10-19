@@ -35,6 +35,7 @@ You can go back and forth through the steps anytime, but the whole process is co
 You will be judged by the following criteria.
 - Functionality is correct with respect to the specifications, while breaking changes are acceptable only if rational.
 - As many bugs are fixed as possible. It should be hard for us to find a remaining bug.
+- Good software engineering principles (e.g. SOLID principles) are followed as appropriate.
 - Identifiers are named meaningfully and consistently.
 - High coupling code blocks are adjacent to each other.
 - Possible errors are handled and exposed to users beautifully. Note: Any API call may result in an error due to invalid input, network disconnection, or server error. Due to network conditions, sometimes an API call may take longer time than usual.
