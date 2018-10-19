@@ -35,14 +35,12 @@ class ConfirmEmailModal extends React.PureComponent {
     return (
       <div>
         <input
-          type='text'
-          placeholder='ross@example.com'
+          type="text"
+          placeholder="ross@example.com"
           style={{ width: '350px' }}
           onChange={this.props.onTypeEmail}
         />
-        <span style={{ color: 'red' }}>
-          {errorMessage}
-        </span>
+        <span style={{ color: 'red' }}>{errorMessage}</span>
       </div>
     )
   }
@@ -50,19 +48,13 @@ class ConfirmEmailModal extends React.PureComponent {
   render() {
     return (
       <div>
-        <h1>
-          Delete account
-        </h1>
-        <p>
-          This action cannot be undone.
-        </p>
-        <div>
-          Please enter your email: {this.renderFormInputPasssword()}
-        </div>
+        <h1>Delete account</h1>
+        <p>This action cannot be undone.</p>
+        <div>Please enter your email: {this.renderFormInputPasssword()}</div>
         <div style={{ marginTop: '1rem' }}>
           <label>
             <input
-              type='checkbox'
+              type="checkbox"
               checked={this.state.markedConsequences}
               onChange={this.onToggleMarkedConsequences}
             />
@@ -70,10 +62,11 @@ class ConfirmEmailModal extends React.PureComponent {
           </label>
         </div>
         <div>
-          <button onClick={this.props.onBackButton}>
-            Back
-          </button>
-          <button onClick={this.props.onClickToDelete} disabled={this.getStateButton()}>
+          <button onClick={this.props.onBackButton}>Back</button>
+          <button
+            onClick={this.props.onClickToDelete}
+            disabled={this.getStateButton()}
+          >
             Delete my account
           </button>
         </div>

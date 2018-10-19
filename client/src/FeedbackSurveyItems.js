@@ -39,5 +39,5 @@ export const feedbackSurveyItems = [
     title: 'Other reason(s)...',
     placeHolder: 'Please specify',
     canComment: true,
-  }
+  },
 ]

@@ -2,7 +2,9 @@ import _ from 'lodash'
 import React from 'react'
 
 import ConfirmEmailModal from './ConfirmEmailModal.react'
-import TransferOwnershipModal, { WorkspaceGroupRows } from './TransferOwnershipModal.react'
+import TransferOwnershipModal, {
+  WorkspaceGroupRows,
+} from './TransferOwnershipModal.react'
 import FeedbackSurveyModal from './FeedbackSurveyModal.react'
 import { submitToSurveyMonkeyDeleteAccount } from './SurveyService'
 import * as LoadState from './LoadState'
@@ -75,9 +77,9 @@ export default class TerminateModalFlow extends React.Component {
         {
           workspaceId: workspace.spaceId,
           toUser: user,
-          ...LoadState.pending
-        }
-      ]
+          ...LoadState.pending,
+        },
+      ],
     })
   }
 
@@ -112,8 +114,8 @@ export default class TerminateModalFlow extends React.Component {
         activeModal: 'confirm',
         feedbacks: _.map(feedbackRefs, ref => ({
           reason: ref.key,
-          comment: ref.value
-        }))
+          comment: ref.value,
+        })),
       })
     }
     this.submitSurvey()
@@ -133,7 +135,7 @@ export default class TerminateModalFlow extends React.Component {
     this.assignToUser(workspace, user)
   }
 
-  onChangeComment = (e) => {
+  onChangeComment = e => {
     this.setState({ comment: e.target.value })
   }
 
@@ -142,9 +144,9 @@ export default class TerminateModalFlow extends React.Component {
       const payload = {
         transferTargets: _.map(this.getTransferData(), assign => ({
           userId: assign.toUser._id,
-          spaceId: assign.workspaceId
+          spaceId: assign.workspaceId,
         })),
-        reason: this.state.feedbacks
+        reason: this.state.feedbacks,
       }
       this.props.terminateAccount(payload)
     } else {
@@ -173,7 +175,7 @@ export default class TerminateModalFlow extends React.Component {
       >
         <WorkspaceGroupRows
           workspaces={this.props.requiredTransferWorkspaces}
-          groupTitle='The following workspaces require ownership transfer:'
+          groupTitle="The following workspaces require ownership transfer:"
           shouldDisplay={totalWorkspaceRequiredTransfer > 0}
         >
           <AssignOwnership
@@ -184,7 +186,7 @@ export default class TerminateModalFlow extends React.Component {
         </WorkspaceGroupRows>
         <WorkspaceGroupRows
           workspaces={this.props.deleteWorkspaces}
-          groupTitle='The following workspaces will be deleted:'
+          groupTitle="The following workspaces will be deleted:"
           shouldDisplay={totalWorkspaceDelete > 0}
         />
       </TransferOwnershipModal>
@@ -198,8 +200,8 @@ export default class TerminateModalFlow extends React.Component {
       case 'feedback':
         return (
           <FeedbackSurveyModal
-            ref='feedbackForm'
-            title='Why would you leave us?'
+            ref="feedbackForm"
+            title="Why would you leave us?"
             onSubmit={this.onSetNextPage}
             onBackButton={this.onGoToPreviousStep}
             showCommentForm
