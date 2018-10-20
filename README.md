@@ -20,7 +20,7 @@ You can go back and forth through the steps anytime, but the whole process is co
 
 ### Instructions
 
-- You are instructed to improve the code mainly in JavaScript files inside `client/src` directory. There are many bugs hidden in this app, try to fix as many bugs as you can find. Also, try to refactor the code so that it becomes easier to maintain. We expect you to show your best work with highest attention to detail.
+- You are instructed to improve the code mainly in JavaScript files inside `client/src` directory. There are many bugs hidden in this app, try to fix as many bugs as you can find. Also, try to refactor the code so that it becomes easier to maintain. **We expect you to show us your best work with highest attention to detail.**
 - You may amend, move, or delete some of the existing functionality even it breaks the specifications as long as you see fit.
 - You may add new functionality in addition to the specifications as you see fit.
 - You may rename the files and React components as you see fit.
