@@ -6,12 +6,12 @@ const STATUS_REFRESHING = 'refreshing' // Data is already loaded but is refreshi
 const STATUS_ERROR = 'error' // Load error.
 
 export const pending = { status: STATUS_PENDING }
-const fetching = { status: STATUS_FETCHING }
+export const fetching = { status: STATUS_FETCHING }
 export const completed = { status: STATUS_COMPLETED }
-const outdated = { status: STATUS_OUTDATED }
-const refreshing = { status: STATUS_REFRESHING }
-export const error = STATUS_ERROR
-const initWithError = error => ({ status: STATUS_ERROR, error })
+export const outdated = { status: STATUS_OUTDATED }
+export const refreshing = { status: STATUS_REFRESHING }
+export const error = { status: STATUS_ERROR }
+export const initWithError = error => ({ status: STATUS_ERROR, error })
 
 export const isError = state => state.status === STATUS_ERROR
 export const shouldLoad = state =>

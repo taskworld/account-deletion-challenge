@@ -14,6 +14,7 @@ export default class AssignOwnership extends React.Component {
 
   getAddedMember() {
     const { workspace, transferData } = this.props
+
     return _.chain(transferData)
       .reject(LoadState.isError || LoadState.isLoading)
       .find(assign => assign.workspaceId === workspace.spaceId)
@@ -22,13 +23,17 @@ export default class AssignOwnership extends React.Component {
   }
 
   onAssignToUser = e => {
-    const user = this.props.workspace.transferableMembers.find(
+    const { onAssignToUser, workspace } = this.props
+    const user = workspace.transferableMembers.find(
       user => user._id === e.target.value
     )
-    this.props.onAssignToUser(this.props.workspace, user)
+
+    onAssignToUser(workspace, user)
   }
 
   render() {
+    const { workspace } = this.props
+
     return (
       <div style={{ textDecoration: 'underline', cursor: 'pointer' }}>
         <select
@@ -37,7 +42,7 @@ export default class AssignOwnership extends React.Component {
           style={{ minWidth: '3rem' }}
         >
           <option value="" disabled />
-          {this.props.workspace.transferableMembers.map(user => (
+          {workspace.transferableMembers.map(user => (
             <option key={user._id} value={user._id}>
               {user.name}
             </option>
