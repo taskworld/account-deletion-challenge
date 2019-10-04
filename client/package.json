@@ -5,34 +5,34 @@
     "serve": "cross-env NODE_ENV=development parcel src/index.html --out-dir out"
   },
   "devDependencies": {
-    "@types/autoprefixer": "6.7.3",
-    "@types/lodash": "4.14.116",
-    "@types/parcel-bundler": "1.10.0",
-    "@types/react": "16.4.16",
-    "@types/react-dom": "16.0.9",
-    "babel-plugin-transform-class-properties": "^6.24.1",
+    "@babel/core": "^7.6.2",
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/plugin-syntax-class-properties": "^7.2.0",
+    "@babel/plugin-transform-runtime": "^7.6.2",
+    "@babel/preset-env": "^7.6.2",
+    "@babel/preset-react": "^7.0.0",
+    "@types/lodash": "4.14.141",
+    "@types/parcel-bundler": "1.12.1",
+    "@types/react": "16.9.5",
+    "@types/react-dom": "16.9.1",
     "cross-env": "5.1.4"
   },
   "dependencies": {
-    "autoprefixer": "8.2.0",
-    "babel-preset-react-app": "3.1.1",
-    "lodash": "4.17.5",
-    "parcel-bundler": "~1.7.0",
-    "react": "^15.0.0",
-    "react-dom": "^15.0.0"
+    "lodash": "4.17.15",
+    "parcel-bundler": "1.12.3",
+    "prop-types": "^15.7.2",
+    "react": "16.10.2",
+    "react-dom": "16.10.2"
   },
-  "postcss": {
-    "modules": false,
-    "plugins": {
-      "autoprefixer": {
-        "browsers": [
-          ">1%",
-          "last 4 versions",
-          "Firefox ESR",
-          "not ie < 9"
-        ],
-        "flexbox": "no-2009"
-      }
-    }
+  "babel": {
+    "presets": [
+      "@babel/preset-env",
+      "@babel/preset-react"
+    ],
+    "plugins": [
+      "@babel/plugin-syntax-class-properties",
+      "@babel/plugin-proposal-class-properties",
+      "@babel/plugin-transform-runtime"
+    ]
   }
 }

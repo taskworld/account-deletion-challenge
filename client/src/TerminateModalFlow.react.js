@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import PropTypes from 'prop-types'
 import React from 'react'
 
 import ConfirmEmailModal from './ConfirmEmailModal.react'
@@ -12,18 +13,18 @@ import AssignOwnership from './AssignOwnership.react'
 
 export default class TerminateModalFlow extends React.Component {
   static propTypes = {
-    user: React.PropTypes.object.isRequired,
-    loading: React.PropTypes.bool,
-    requiredTransferWorkspaces: React.PropTypes.array,
-    deleteWorkspaces: React.PropTypes.array,
-    fetchRelatedWorkspaces: React.PropTypes.func,
-    transferOwnershipStatus: React.PropTypes.object,
-    transferOwnership: React.PropTypes.func,
-    terminateAccount: React.PropTypes.func,
-    terminateAccountError: React.PropTypes.func,
-    terminateAccountStatus: React.PropTypes.object,
-    resetTerminateAccountStatus: React.PropTypes.func,
-    rediectToHomepage: React.PropTypes.func,
+    user: PropTypes.object.isRequired,
+    loading: PropTypes.bool,
+    requiredTransferWorkspaces: PropTypes.array,
+    deleteWorkspaces: PropTypes.array,
+    fetchRelatedWorkspaces: PropTypes.func,
+    transferOwnershipStatus: PropTypes.object,
+    transferOwnership: PropTypes.func,
+    terminateAccount: PropTypes.func,
+    terminateAccountError: PropTypes.func,
+    terminateAccountStatus: PropTypes.object,
+    resetTerminateAccountStatus: PropTypes.func,
+    rediectToHomepage: PropTypes.func,
   }
 
   state = {
