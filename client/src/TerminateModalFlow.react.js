@@ -14,33 +14,42 @@ import AssignOwnership from './AssignOwnership.react'
 export default class TerminateModalFlow extends React.Component {
   static propTypes = {
     user: PropTypes.object.isRequired,
-    loading: PropTypes.bool,
-    requiredTransferWorkspaces: PropTypes.array,
-    fetchRelatedWorkspaces: PropTypes.func,
-    transferOwnership: PropTypes.func,
-    terminateAccount: PropTypes.func,
-    terminateAccountError: PropTypes.func,
-    terminateAccountStatus: PropTypes.object,
-    resetTerminateAccountStatus: PropTypes.func,
-    rediectToHomepage: PropTypes.func,
   }
 
   state = {
     activeModal: 'transfer',
+
+    loading: true,
+    requiredTransferWorkspaces: [],
+    transferableMembers: [],
+    terminateAccountStatus: {},
+
     transferData: [],
     feedbacks: [],
     comment: '',
     email: '',
   }
 
-  componentDidMount() {
-    this.props.fetchRelatedWorkspaces()
+  async componentDidMount() {
+    const response = await window.fetch(
+      `https://us-central1-tw-account-deletion-challenge.cloudfunctions.net/fetchWorkspaces?userId=${
+      this.props.user._id
+      }`,
+      {
+        mode: 'cors',
+      }
+    )
+    const data = await response.json()
+    this.setState({
+      loading: false,
+      requiredTransferWorkspaces: data.requiredTransferWorkspaces,
+    })
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (LoadState.isLoaded(nextProps.terminateAccountStatus)) {
-      this.props.rediectToHomepage()
-    }
+  resetTerminateAccountStatus = () => {
+    this.setState({
+      terminateAccountStatus: LoadState.pending,
+    })
   }
 
   getTransferData = () => {
@@ -137,10 +146,40 @@ export default class TerminateModalFlow extends React.Component {
         })),
         reason: this.state.feedbacks,
       }
-      this.props.terminateAccount(payload)
+
+      // Note that there is 30% chance of getting error from the server
+      const response = await window.fetch(
+        'https://us-central1-tw-account-deletion-challenge.cloudfunctions.net/terminateAccount',
+        {
+          method: 'POST',
+          mode: 'cors',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload),
+        }
+      )
+
+      if (response.status === 200) {
+        this.setState({
+          terminateAccountStatus: LoadState.handleLoaded(
+            this.state.terminateAccountStatus
+          ),
+        })
+        window.location = 'http://www.example.com/'
+      } else {
+        this.setState({
+          terminateAccountStatus: LoadState.handleLoadFailedWithError(
+            'Error deleting account'
+          )(this.state.terminateAccountStatus),
+        })
+      }
     } else {
-      const error = 'Invalid email'
-      this.props.terminateAccountError(error)
+      this.setState({
+        terminateAccountStatus: LoadState.handleLoadFailedWithError(
+          'Invalid email'
+        )(this.state.terminateAccountStatus),
+      })
     }
   }
 
@@ -151,18 +190,18 @@ export default class TerminateModalFlow extends React.Component {
   renderTransferModal() {
     const transferData = this.getTransferData()
     const totalAssigned = transferData.length
-    const totalWorkspaceRequiredTransfer = this.props.requiredTransferWorkspaces
+    const totalWorkspaceRequiredTransfer = this.state.requiredTransferWorkspaces
       .length
     const disabledNextPage =
-      totalAssigned < totalWorkspaceRequiredTransfer || this.props.loading
+      totalAssigned < totalWorkspaceRequiredTransfer || this.state.loading
     return (
       <TransferOwnershipModal
         nextPage={this.onSetNextPage}
-        loading={this.props.loading}
+        loading={this.state.loading}
         disabledNextPage={disabledNextPage}
       >
         <WorkspaceGroupRows
-          workspaces={this.props.requiredTransferWorkspaces}
+          workspaces={this.state.requiredTransferWorkspaces}
         >
           <AssignOwnership
             user={this.props.user}
@@ -196,8 +235,8 @@ export default class TerminateModalFlow extends React.Component {
             onBackButton={this.onGoToPreviousStep}
             email={this.state.email}
             onTypeEmail={this.onTypeEmail}
-            terminateAccountStatus={this.props.terminateAccountStatus}
-            resetTerminateAccountStatus={this.props.resetTerminateAccountStatus}
+            terminateAccountStatus={this.state.terminateAccountStatus}
+            resetTerminateAccountStatus={this.resetTerminateAccountStatus}
           />
         )
     }
