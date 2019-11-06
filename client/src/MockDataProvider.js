@@ -22,8 +22,6 @@ export default class MockDataProvider extends React.Component {
 
       requiredTransferWorkspaces: [],
 
-      deleteWorkspaces: [],
-
       transferableMembers: [],
 
       fetchRelatedWorkspaces: async () => {
@@ -39,7 +37,6 @@ export default class MockDataProvider extends React.Component {
         this.setState({
           loading: false,
           requiredTransferWorkspaces: data.requiredTransferWorkspaces,
-          deleteWorkspaces: data.deleteWorkspaces,
         })
       },
 
