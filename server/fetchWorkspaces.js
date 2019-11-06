@@ -59,12 +59,6 @@ module.exports = functions.https.onRequest((request, response) =>
           ],
         },
       ],
-      deleteWorkspaces: [
-        {
-          spaceId: 'workspace3',
-          displayName: 'Moon landing',
-        },
-      ],
     })
   })
 )

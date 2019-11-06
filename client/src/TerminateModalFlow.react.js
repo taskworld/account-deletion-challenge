@@ -16,7 +16,6 @@ export default class TerminateModalFlow extends React.Component {
     user: PropTypes.object.isRequired,
     loading: PropTypes.bool,
     requiredTransferWorkspaces: PropTypes.array,
-    deleteWorkspaces: PropTypes.array,
     fetchRelatedWorkspaces: PropTypes.func,
     transferOwnership: PropTypes.func,
     terminateAccount: PropTypes.func,
@@ -154,7 +153,6 @@ export default class TerminateModalFlow extends React.Component {
     const totalAssigned = transferData.length
     const totalWorkspaceRequiredTransfer = this.props.requiredTransferWorkspaces
       .length
-    const totalWorkspaceDelete = this.props.deleteWorkspaces.length
     const disabledNextPage =
       totalAssigned < totalWorkspaceRequiredTransfer || this.props.loading
     return (
@@ -165,8 +163,6 @@ export default class TerminateModalFlow extends React.Component {
       >
         <WorkspaceGroupRows
           workspaces={this.props.requiredTransferWorkspaces}
-          groupTitle="The following workspaces require ownership transfer:"
-          shouldDisplay={totalWorkspaceRequiredTransfer > 0}
         >
           <AssignOwnership
             user={this.props.user}
@@ -174,11 +170,6 @@ export default class TerminateModalFlow extends React.Component {
             onAssignToUser={this.onAssignToUser}
           />
         </WorkspaceGroupRows>
-        <WorkspaceGroupRows
-          workspaces={this.props.deleteWorkspaces}
-          groupTitle="The following workspaces will be deleted:"
-          shouldDisplay={totalWorkspaceDelete > 0}
-        />
       </TransferOwnershipModal>
     )
   }
