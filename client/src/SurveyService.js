@@ -12,7 +12,6 @@ const CANCEL_WORKSPACE = {
     BUGS: '1170264113',
     EXPENSIVE: '1170264119',
     SLOW: '1170264120',
-    OTHERS: '1170286307',
   },
 }
 
@@ -32,8 +31,6 @@ const getChoiceID = key => {
       return CANCEL_WORKSPACE.CHOICE_ID.EXPENSIVE
     case 'slow':
       return CANCEL_WORKSPACE.CHOICE_ID.SLOW
-    case 'others':
-      return CANCEL_WORKSPACE.CHOICE_ID.OTHERS
     default:
       return ''
   }
@@ -41,14 +38,7 @@ const getChoiceID = key => {
 
 const getSurveyPayload = (feedbackRefs, comment) => {
   const surveyAnswers = _.map(feedbackRefs, ref => {
-    if (getChoiceID(ref.key) === CANCEL_WORKSPACE.CHOICE_ID.OTHERS) {
-      return {
-        text: ref.value || 'n/a',
-        other_id: CANCEL_WORKSPACE.CHOICE_ID.OTHERS,
-      }
-    } else {
-      return { choice_id: getChoiceID(ref.key) }
-    }
+    return { choice_id: getChoiceID(ref.key) }
   })
   const surveyPayload = {
     pages: [

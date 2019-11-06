@@ -75,12 +75,12 @@ export default class TerminateModalFlow extends React.Component {
 
   getRefsValues(refs, refName) {
     const item = _.get(refs, refName, false)
-    if (!item || _.isEmpty(item.refs)) return {}
+    if (!item) return {}
 
     const keys = Object.keys(item.refs)
     const collection = []
     for (const key of keys) {
-      const value = item.refs[key].value
+      const value = item.refs[key].checked
       collection.push({ key, value })
     }
     return collection
@@ -185,7 +185,6 @@ export default class TerminateModalFlow extends React.Component {
             title="Why would you leave us?"
             onSubmit={this.onSetNextPage}
             onBackButton={this.onGoToPreviousStep}
-            showCommentForm
             comment={this.state.comment}
             onChangeComment={this.onChangeComment}
           />
