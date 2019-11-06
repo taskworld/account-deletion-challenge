@@ -12,7 +12,6 @@ const CHOICE_IDS = [
   '1170264119',
   '1170264120',
 ]
-const OTHER_ID = '1170286307'
 const COMMENT_ID = '164973120'
 
 module.exports = functions.https.onRequest((request, response) =>
@@ -122,28 +121,9 @@ module.exports = functions.https.onRequest((request, response) =>
                 CHOICE_IDS.join(', ')
             )
           }
-        } else if (answer.other_id) {
-          if (_.difference(_.keys(answer), ['other_id', 'text']).length > 0) {
-            return response.send(
-              'Expected "pages[].questions[].answers" value to be an object containing only "other_id" and "text" field'
-            )
-          }
-
-          if (answer.other_id !== OTHER_ID) {
-            return response.send(
-              'Expected "pages[].questions[].answers[].other_id" value to be ' +
-                OTHER_ID
-            )
-          }
-
-          if (_.isString(answer.text) === false || answer.text.length === 0) {
-            return response.send(
-              'Expected "pages[].questions[].answers[].text" field to be a non-empty string'
-            )
-          }
         } else {
           return response.send(
-            'Expected "pages[].questions[].answers" value to have the type of either { choice_id } or { other_id, text }'
+            'Expected "pages[].questions[].answers" value to have the type of { choice_id }'
           )
         }
       }

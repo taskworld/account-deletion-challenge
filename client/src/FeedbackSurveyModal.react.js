@@ -9,50 +9,25 @@ class FeedbackSurveyModal extends React.PureComponent {
     onSubmit: PropTypes.func,
     onBackButton: PropTypes.func,
     title: PropTypes.node,
-    showCommentForm: PropTypes.bool,
     comment: PropTypes.string,
     onChangeComment: PropTypes.func,
   }
 
   constructor(props) {
     super(props)
-    this.state = this.setInitialState()
-  }
 
-  state = {
-    isFocusCommentBox: false,
-  }
-
-  setInitialState = () => {
-    return _.chain(feedbackSurveyItems)
+    this.state = _.chain(feedbackSurveyItems)
       .map(item => [item.stack, false])
       .fromPairs()
       .value()
   }
 
   hasAllUnchecked = () => {
-    const FeedbackSurveyItems = this.state
-    return (
-      _.every(FeedbackSurveyItems, val => val === false) &&
-      !this.state.isFocusCommentBox
-    )
+    return _.every(this.state, val => val === false)
   }
 
   onToggleFeedback(stack) {
-    this.setState({ [stack]: !this.state[stack] })
-  }
-
-  onFocusCommentBox = () => {
-    this.setState({ isFocusCommentBox: !this.state.isFocusCommentBox })
-  }
-
-  renderInputForm({ stack, canComment, placeHolder }) {
-    const prefill = placeHolder && canComment ? placeHolder : ''
-    return !this.state[stack] ? null : (
-      <div style={!canComment ? { display: 'none' } : null}>
-        <input type="text" name={stack} ref={stack} placeholder={prefill} />
-      </div>
-    )
+    this.setState(prevState => ({ [stack]: !prevState[stack] }))
   }
 
   renderButtons() {
@@ -66,8 +41,7 @@ class FeedbackSurveyModal extends React.PureComponent {
     )
   }
 
-  renderCommentForm() {
-    if (!this.props.showCommentForm) return
+  renderCommentBox() {
     return (
       <div style={{ marginTop: '2rem' }}>
         Comments:
@@ -75,11 +49,6 @@ class FeedbackSurveyModal extends React.PureComponent {
           <textarea
             type="text"
             name="comment"
-            style={
-              this.state.isFocusCommentBox
-                ? { border: '1px solid blue' }
-                : { border: '1px solid black' }
-            }
             onChange={this.props.onChangeComment}
             value={this.props.comment}
           />
@@ -98,16 +67,16 @@ class FeedbackSurveyModal extends React.PureComponent {
               <label>
                 <input
                   type="checkbox"
+                  ref={item.stack}
                   checked={this.state[item.stack]}
                   onClick={() => this.onToggleFeedback(item.stack)}
                 />
                 {item.title}
               </label>
-              {this.renderInputForm(item)}
             </div>
           ))}
         </div>
-        {this.renderCommentForm()}
+        {this.renderCommentBox()}
         {this.renderButtons()}
       </div>
     )
