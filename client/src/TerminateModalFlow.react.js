@@ -18,7 +18,6 @@ export default class TerminateModalFlow extends React.Component {
     requiredTransferWorkspaces: PropTypes.array,
     deleteWorkspaces: PropTypes.array,
     fetchRelatedWorkspaces: PropTypes.func,
-    transferOwnershipStatus: PropTypes.object,
     transferOwnership: PropTypes.func,
     terminateAccount: PropTypes.func,
     terminateAccountError: PropTypes.func,
@@ -46,19 +45,11 @@ export default class TerminateModalFlow extends React.Component {
   }
 
   getTransferData = () => {
-    const { workspaceId, toUserId, status } = this.props.transferOwnershipStatus
     const transferData = this.state.transferData
     const updateData = _.reduce(
       transferData,
       (result, assign) => {
-        if (
-          assign.workspaceId === workspaceId &&
-          assign.toUser._id === toUserId
-        ) {
-          result.push(Object.assign({}, assign, { status }))
-        } else {
-          result.push(assign)
-        }
+        result.push(assign)
         return result
       },
       []
@@ -131,7 +122,6 @@ export default class TerminateModalFlow extends React.Component {
   }
 
   onAssignToUser = (workspace, user) => {
-    this.props.transferOwnership(user, workspace)
     this.assignToUser(workspace, user)
   }
 
