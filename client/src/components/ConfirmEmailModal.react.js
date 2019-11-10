@@ -7,7 +7,7 @@ import * as LoadState from "../LoadState";
 class ConfirmEmailModal extends React.PureComponent {
   static propTypes = {
     onBackButton: PropTypes.func,
-    email: PropTypes.string,
+    user: PropTypes.object,
     getTransferData: PropTypes.func,
     feedbacks: PropTypes.array
   };
@@ -45,40 +45,41 @@ class ConfirmEmailModal extends React.PureComponent {
   };
 
   onDeleteAccount = async () => {
-    if (this.props.user.email === this.state.email) {
-      this.setState({ terminateAccountStatus: LoadState.pending });
-      const payload = {
-        transferTargets: _.map(this.props.getTransferData(), assign => ({
-          userId: assign.toUser._id,
-          spaceId: assign.workspaceId
-        })),
-        reason: this.props.feedbacks
-      };
+    // check for conditions
+    if (this.props.user.email !== this.state.email) {
+      this.setError("Invalid email");
+      return;
+    }
 
-      // Note that there is 30% chance of getting error from the server
-      const response = await window
-        .fetch("https://us-central1-tw-account-deletion-challenge.cloudfunctions.net/terminateAccount", {
-          method: "POST",
-          mode: "cors",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(payload)
-        })
-        .catch(() => {
-          this.setError("Error deleting account");
-        });
+    this.setState({ terminateAccountStatus: LoadState.pending });
+    const payload = {
+      transferTargets: _.map(this.props.getTransferData(), assign => ({
+        userId: assign.toUser._id,
+        spaceId: assign.workspaceId
+      })),
+      reason: this.props.feedbacks
+    };
+
+    // Note that there is 30% chance of getting error from the server
+    try {
+      const response = await fetch("https://us-central1-tw-account-deletion-challenge.cloudfunctions.net/terminateAccount", {
+        method: "POST",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
 
       if (response.status === 200) {
-        this.setState({
-          terminateAccountStatus: LoadState.handleLoaded(this.state.terminateAccountStatus)
-        });
+        this.setState({ terminateAccountStatus: LoadState.handleLoaded(this.state.terminateAccountStatus) });
         window.location = "http://www.example.com/";
+        return;
       } else {
         this.setError("Error deleting account");
       }
-    } else {
-      this.setError("Invalid email");
+    } catch (error) {
+      this.setError("Error deleting account");
     }
   };
 
