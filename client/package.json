@@ -2,7 +2,8 @@
   "name": "account-deletion-challenge",
   "license": "MIT",
   "scripts": {
-    "serve": "cross-env NODE_ENV=development parcel src/index.html --out-dir out"
+    "serve": "cross-env NODE_ENV=development parcel src/index.html --out-dir out",
+    "test": "jest"
   },
   "devDependencies": {
     "@babel/core": "^7.7.0",
@@ -11,11 +12,14 @@
     "@babel/plugin-transform-runtime": "^7.6.2",
     "@babel/preset-env": "^7.7.1",
     "@babel/preset-react": "^7.7.0",
+    "@testing-library/jest-dom": "^4.2.3",
+    "@testing-library/react": "^9.3.2",
     "@types/lodash": "^4.14.144",
     "@types/parcel-bundler": "1.12.1",
     "@types/react": "^16.9.11",
     "@types/react-dom": "^16.9.3",
-    "cross-env": "5.1.4"
+    "cross-env": "5.1.4",
+    "jest": "^24.9.0"
   },
   "dependencies": {
     "lodash": "^4.17.15",

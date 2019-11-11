@@ -1,45 +1,45 @@
-import _ from 'lodash'
+import _ from "lodash";
 
 const CANCEL_WORKSPACE = {
-  PAGE_ID: '48414504',
-  MULTIPLE_CHOICES_ID: '162037852',
-  COMMENTS_ID: '164973120',
+  PAGE_ID: "48414504",
+  MULTIPLE_CHOICES_ID: "162037852",
+  COMMENTS_ID: "164973120",
   CHOICE_ID: {
-    DONT_UNDERSTAND: '1170264109',
-    DONT_NEED: '1170264110',
-    PREFER_OTHER_APPS: '1170264111',
-    LACK_FEATURES: '1170264112',
-    BUGS: '1170264113',
-    EXPENSIVE: '1170264119',
-    SLOW: '1170264120',
-  },
-}
+    DONT_UNDERSTAND: "1170264109",
+    DONT_NEED: "1170264110",
+    PREFER_OTHER_APPS: "1170264111",
+    LACK_FEATURES: "1170264112",
+    BUGS: "1170264113",
+    EXPENSIVE: "1170264119",
+    SLOW: "1170264120"
+  }
+};
 
 const getChoiceID = key => {
   switch (key) {
-    case 'dont_understand':
-      return CANCEL_WORKSPACE.CHOICE_ID.DONT_UNDERSTAND
-    case 'dont_need':
-      return CANCEL_WORKSPACE.CHOICE_ID.DONT_NEED
-    case 'prefer_other_apps':
-      return CANCEL_WORKSPACE.CHOICE_ID.PREFER_OTHER_APPS
-    case 'lack_features':
-      return CANCEL_WORKSPACE.CHOICE_ID.LACK_FEATURES
-    case 'bugs':
-      return CANCEL_WORKSPACE.CHOICE_ID.BUGS
-    case 'expensive':
-      return CANCEL_WORKSPACE.CHOICE_ID.EXPENSIVE
-    case 'slow':
-      return CANCEL_WORKSPACE.CHOICE_ID.SLOW
+    case "dont_understand":
+      return CANCEL_WORKSPACE.CHOICE_ID.DONT_UNDERSTAND;
+    case "dont_need":
+      return CANCEL_WORKSPACE.CHOICE_ID.DONT_NEED;
+    case "prefer_other_apps":
+      return CANCEL_WORKSPACE.CHOICE_ID.PREFER_OTHER_APPS;
+    case "lack_features":
+      return CANCEL_WORKSPACE.CHOICE_ID.LACK_FEATURES;
+    case "bugs":
+      return CANCEL_WORKSPACE.CHOICE_ID.BUGS;
+    case "expensive":
+      return CANCEL_WORKSPACE.CHOICE_ID.EXPENSIVE;
+    case "slow":
+      return CANCEL_WORKSPACE.CHOICE_ID.SLOW;
     default:
-      return ''
+      return "";
   }
-}
+};
 
-const getSurveyPayload = (feedbackRefs, comment) => {
-  const surveyAnswers = _.map(feedbackRefs, ref => {
-    return { choice_id: getChoiceID(ref.key) }
-  })
+const getSurveyPayload = (feedbacks, comment) => {
+  const surveyAnswers = _.map(feedbacks, ref => {
+    return { choice_id: getChoiceID(ref.key) };
+  });
   const surveyPayload = {
     pages: [
       {
@@ -47,41 +47,35 @@ const getSurveyPayload = (feedbackRefs, comment) => {
         questions: [
           {
             id: CANCEL_WORKSPACE.MULTIPLE_CHOICES_ID,
-            answers: surveyAnswers,
-          },
-        ],
-      },
-    ],
-  }
+            answers: surveyAnswers
+          }
+        ]
+      }
+    ]
+  };
   if (comment) {
-    const commentAnswers = [{ text: comment }]
+    const commentAnswers = [{ text: comment }];
     const commentQuestion = {
       id: CANCEL_WORKSPACE.COMMENTS_ID,
-      answers: commentAnswers,
-    }
-    surveyPayload.pages[0].questions.push(commentQuestion)
+      answers: commentAnswers
+    };
+    surveyPayload.pages[0].questions.push(commentQuestion);
   }
-  return surveyPayload
-}
+  return surveyPayload;
+};
 
-export const submitToSurveyMonkeyDeleteAccount = async ({
-  feedbackRefs,
-  comment,
-}) => {
-  const surveyPayload = getSurveyPayload(feedbackRefs, comment)
+export const submitToSurveyMonkeyDeleteAccount = async ({ feedbacks, comment }) => {
+  const surveyPayload = getSurveyPayload(feedbacks, comment);
 
-  const response = await window.fetch(
-    'https://us-central1-tw-account-deletion-challenge.cloudfunctions.net/submitSurvey',
-    {
-      method: 'POST',
-      mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(surveyPayload),
-    }
-  )
+  const response = await window.fetch("https://us-central1-tw-account-deletion-challenge.cloudfunctions.net/submitSurvey", {
+    method: "POST",
+    mode: "cors",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(surveyPayload)
+  });
   if (response.status !== 200) {
-    throw new Error('Error submitting SurveyMonkey')
+    throw new Error("Error submitting SurveyMonkey");
   }
-}
+};
