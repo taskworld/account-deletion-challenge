@@ -9,7 +9,7 @@ const mockJsonPromise = Promise.resolve({});
 const mockFetchPromise = Promise.resolve({ json: () => mockJsonPromise });
 global.fetch = jest.fn().mockImplementation(() => mockFetchPromise);
 
-test("button should be disabled by default", () => {
+test("Delete button should be disabled by default", () => {
   const props = { onBackButton: jest.fn(), user: { email: "ross.example.com" }, getTransferData: jest.fn(), feedbacks: [] };
 
   const { getByText } = render(<ConfirmEmailModal {...props} />);
@@ -18,7 +18,7 @@ test("button should be disabled by default", () => {
   expect(getByText("Delete my account")).toBeDisabled();
 });
 
-test("should show error when entered wrong email", () => {
+test("Should show error when entered wrong email", () => {
   const props = { onBackButton: jest.fn(), user: { email: "ross.example.com" }, getTransferData: jest.fn(), feedbacks: [] };
 
   const { getByPlaceholderText, getByText } = render(<ConfirmEmailModal {...props} />);

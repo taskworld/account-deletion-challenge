@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import Swal from "sweetalert2";
 
+import * as LoadState from "../LoadState";
 import { submitToSurveyMonkeyDeleteAccount } from "../SurveyService";
 import { feedbackSurveyItems } from "../constants/FeedbackSurveyItems";
 
@@ -21,7 +22,8 @@ class FeedbackSurveyModal extends React.Component {
         .map(item => [item.stack, false])
         .fromPairs()
         .value(),
-      comment: ""
+      comment: "",
+      surveyStatus: {}
     };
   }
 
@@ -35,15 +37,17 @@ class FeedbackSurveyModal extends React.Component {
     this.setState({ surveyItems });
   }
 
-  getRefsValues() {
-    const keys = Object.keys(this.refs);
-    const collection = [];
-    for (const key of keys) {
-      const value = this.refs[key].checked;
-      if (value) {
-        collection.push({ key, value });
+  getValues() {
+    const { surveyItems } = this.state;
+    const keys = Object.keys(surveyItems);
+    const collection = keys.reduce((acc, curr) => {
+      if (surveyItems[curr]) {
+        acc.push({ key: curr, value: surveyItems[curr] });
+        return acc;
       }
-    }
+      return acc;
+    }, []);
+
     return collection;
   }
 
@@ -52,13 +56,16 @@ class FeedbackSurveyModal extends React.Component {
   };
 
   onSurveySubmit = () => {
-    const feedbackRefs = this.getRefsValues();
+    const feedbacks = this.getValues();
     const surveyPayload = {
-      feedbacks: feedbackRefs,
+      feedbacks,
       comment: this.state.comment
     };
+
+    this.setState({ surveyStatus: LoadState.pending });
     submitToSurveyMonkeyDeleteAccount(surveyPayload)
       .then(() => {
+        this.setState({ surveyStatus: LoadState.completed });
         this.props.onSurveySubmitSuccess(surveyPayload);
       })
       .catch(error => Swal.fire({ title: "Error", text: error.message || "Something went wrong. Please try again later." }));
@@ -68,7 +75,7 @@ class FeedbackSurveyModal extends React.Component {
     return (
       <div>
         <button onClick={this.props.onBackButton}>Back</button>
-        <button onClick={this.onSurveySubmit} disabled={this.hasAllUnchecked()}>
+        <button onClick={this.onSurveySubmit} disabled={this.hasAllUnchecked() || LoadState.isLoading(this.state.surveyStatus)}>
           Next
         </button>
       </div>
@@ -87,7 +94,6 @@ class FeedbackSurveyModal extends React.Component {
   }
 
   render() {
-    console.log(this.state.surveyItems);
     return (
       <div>
         <h1>{this.props.title}</h1>
@@ -95,12 +101,7 @@ class FeedbackSurveyModal extends React.Component {
           {_.map(feedbackSurveyItems, (item, key) => (
             <div key={key}>
               <label>
-                <input
-                  type="checkbox"
-                  ref={item.stack}
-                  checked={this.state.surveyItems[item.stack]}
-                  onClick={() => this.onToggleFeedback(item.stack)}
-                />
+                <input type="checkbox" checked={this.state.surveyItems[item.stack]} onClick={() => this.onToggleFeedback(item.stack)} />
                 {item.title}
               </label>
             </div>

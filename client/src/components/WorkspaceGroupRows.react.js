@@ -8,7 +8,7 @@ const WorkspaceGroupRows = ({ workspaces, children }) => (
       {workspaces.map(workspace => (
         <div key={workspace.spaceId} style={{ marginTop: "1rem" }}>
           <span>Workspace: {workspace.displayName}</span>
-          <span>{React.Children.count(children) === 0 ? null : React.cloneElement(children, { workspace })}</span>
+          <span>{React.Children.count(children) === 0 ? null : <children.type {...children.props} workspace={workspace} />}</span>
         </div>
       ))}
     </div>
